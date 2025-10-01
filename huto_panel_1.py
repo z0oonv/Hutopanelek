@@ -126,12 +126,16 @@ def load_hutopanelek(conn):
             header = next(reader)  # Leolvassuk a fejlécet
 
         for col_index, col_name in enumerate(header):
-            # Csak a 'Time' oszlopokból vonjuk ki a számot (amely a "Panel hőfok" részt tartalmazza)
+            # Csak a 'Time' oszlopokból vonjuk ki a számot
             if "Panel hőfok" in col_name and "Time" in col_name:
-                match = re.search(r"Panel hőfok (\d+) \[", col_name)
-                if match:
-                    panel_num = int(match.group(1))
-                    panel_szamok.add(panel_num)
+                try:
+                    # Robusztus RegEx: csak a számot keresi a "hőfok" után
+                    match = re.search(r"hőfok\s*(\d+)", col_name)
+                    if match:
+                        panel_num = int(match.group(1))
+                        panel_szamok.add(panel_num)
+                except:
+                    continue
 
         # Panel tábla feltöltése
         cursor = conn.cursor()
@@ -152,18 +156,24 @@ def load_hutopanelek(conn):
     meres_data = []
     panel_columns = {}  # {panel_szam: (time_index, valueY_index)}
 
-    # Az oszlop indexek csoportosítása (time, valueY) - Ugyanaz a logika, mint korábban
+    # Az oszlop indexek csoportosítása (time, valueY)
     for p_num in panel_szamok_list:
         time_col_name = f"Panel hőfok {p_num} [°C] Time"
-        value_col_name = f"Panel hőfok {p_num} [°C]"  # <-- A korrigált név!
+        # Visszaállítjuk a helyes oszlopnevet a ValueY utótaggal!
+        value_col_name = f"Panel hőfok {p_num} [°C] ValueY"
+
         try:
+            # Megkeresi az oszlop indexeket az előzőleg beolvasott fejléc alapján (header)
             time_idx = header.index(time_col_name)
             value_idx = header.index(value_col_name)
             panel_columns[p_num] = (time_idx, value_idx)
         except ValueError:
+            # Csak figyelmeztetés, ha egy oszlop hiányzik
             print(f"Figyelem: Hiányzik a(z) {p_num} panel valamelyik oszlopa.")
+            continue  # Továbbmegy a következő panelre
 
     try:
+        # Fájl újbóli megnyitása a mérések olvasásához
         with open(HUTOPANELEK_FILE, 'r', encoding='cp1250') as f:
             reader = csv.reader(f, delimiter=';')
             next(reader)  # Átugorjuk a fejlécet, a reader most az első adatsornál áll!
