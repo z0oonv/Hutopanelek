@@ -5,6 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ddf1c56c-974e-49a7-8e0a-901245ade616" name="Changes" comment="Alap kiindulás.&#10;A feltöltés sikeres a programmal, de az adatok ömlesztettek, szét kell szedni és a felesleget kivenni">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/data_source_mapping.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/data_source_mapping.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/huto_panel_1.py" beforeDir="false" afterPath="$PROJECT_DIR$/huto_panel_1.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -30,33 +34,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Python tests.Doctests in sql.executor": "Debug",
-    "Python.Time_filter.executor": "Run",
-    "Python.adat_tisztitas.executor": "Run",
-    "Python.huto_panel_1.executor": "Run",
-    "Python.koho_hutes_nyers_adatfeltolt.executor": "Run",
-    "Python.masodpercteszt.executor": "Run",
-    "Python.oszlop nevek.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python tests.Doctests in sql.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.Time_filter.executor&quot;: &quot;Run&quot;,
+    &quot;Python.adat_tisztitas.executor&quot;: &quot;Run&quot;,
+    &quot;Python.huto_panel_1.executor&quot;: &quot;Run&quot;,
+    &quot;Python.koho_hutes_nyers_adatfeltolt.executor&quot;: &quot;Run&quot;,
+    &quot;Python.masodpercteszt.executor&quot;: &quot;Run&quot;,
+    &quot;Python.oszlop nevek.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "sqlite"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;sqlite&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -74,7 +78,8 @@
       <updated>1759246010869</updated>
       <workItem from="1759246011949" duration="6010000" />
       <workItem from="1759306109213" duration="425000" />
-      <workItem from="1759306557255" duration="12286000" />
+      <workItem from="1759306557255" duration="12364000" />
+      <workItem from="1759329882713" duration="940000" />
     </task>
     <task id="LOCAL-00001" summary="Alap kiindulás.&#10;Hibára futott, mert a csv file-ban az elválasztás nem vessző hanem/Tab és tizedes vessző probléma.">
       <option name="closed" value="true" />
@@ -124,7 +129,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759329074827</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Alap kiindulás.&#10;A feltöltés sikeres a programmal, de az adatok ömlesztettek, szét kell szedni és a felesleget kivenni">
+      <option name="closed" value="true" />
+      <created>1759329816008</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1759329816008</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -146,7 +159,7 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/koho_hutes$huto_panel_1.coverage" NAME="huto_panel_1 Coverage Results" MODIFIED="1759329078049" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/koho_hutes$huto_panel_1.coverage" NAME="huto_panel_1 Coverage Results" MODIFIED="1759330007086" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/koho_hutes$koho_hutes_nyers_adatfeltolt.coverage" NAME="koho_hutes_nyers_adatfeltolt Coverage Results" MODIFIED="1759306578198" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/koho_hutes$Time_filter.coverage" NAME="Time_filter Coverage Results" MODIFIED="1759320077213" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/koho_hutes$Doctests_in_sql.coverage" NAME="Doctests in sql Coverage Results" MODIFIED="1759304691790" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/.venv/Lib/site-packages/pandas/io" />

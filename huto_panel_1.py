@@ -142,7 +142,7 @@ def load_hutopanelek(conn):
 
         cursor = conn.cursor()
         panel_szamok_list = sorted(list(panel_szamok))
-        cursor.executemany("INSERT INTO Panel (Panel_Szam) VALUES (?)", [(p,) for p in panel_szamok_list])
+        cursor.executemany("INSERT OR IGNORE INTO Panel (Panel_Szam) VALUES (?)", [(p,) for p in panel_szamok_list])
         conn.commit()
         print(f"{len(panel_szamok_list)} panel azonosító feltöltve.")
 
@@ -180,7 +180,7 @@ def load_hutopanelek(conn):
                     pass  # Adattisztítás része, de most átugorjuk
 
     cursor.executemany("""
-                       INSERT INTO Homerseklet_Meretek (Meret_Idopont, Panel_Szam_FK, Hofok_Ertek)
+                       INSERT OR IGNORE INTO Homerseklet_Meretek (Meret_Idopont, Panel_Szam_FK, Hofok_Ertek)
                        VALUES (?, ?, ?)
                        """, meres_data)
     conn.commit()
