@@ -118,75 +118,82 @@ def load_hutopanelek(conn):
     """Beolvassa, UNPIVOT-olja és feltölti a Panel és Homerseklet_Meretek táblákat."""
     print("Hűtőpanelek adatainak normalizálása és feltöltése...")
 
-    meres_data = []
+    # --- 1. Fejlécek elemzése (Panel_Szam kinyerése) ---
+    panel_szamok = set()
+    try:
+        with open(HUTOPANELEK_FILE, 'r', encoding='cp1250') as f:
+            reader = csv.reader(f, delimiter=';')
+            header = next(reader)  # Leolvassuk a fejlécet
 
-    with open(HUTOPANELEK_FILE, 'r', encoding='cp1250') as f:
-        reader = csv.reader(f, delimiter=';')
-        header = next(reader)
-
-        # 1. Panel tábla feltöltése (Panel_Szam kinyerése a fejlécekből)
-        panel_szamok = set()
         for col_index, col_name in enumerate(header):
-            # Csak a 'Time' oszlopokból vonjuk ki a számot
+            # Csak a 'Time' oszlopokból vonjuk ki a számot (amely a "Panel hőfok" részt tartalmazza)
             if "Panel hőfok" in col_name and "Time" in col_name:
-                try:
-                    # Keresi a számot a "Panel hőfok " és a " [" között
-                    match = re.search(r"Panel hőfok (\d+) \[", col_name)
+                match = re.search(r"Panel hőfok (\d+) \[", col_name)
+                if match:
+                    panel_num = int(match.group(1))
+                    panel_szamok.add(panel_num)
 
-                    if match:
-                        # A match.group(1) tartalmazza a megtalált számot (a panel azonosítót)
-                        panel_num = int(match.group(1))
-                        panel_szamok.add(panel_num)
-                except:
-                    continue
-
+        # Panel tábla feltöltése
         cursor = conn.cursor()
         panel_szamok_list = sorted(list(panel_szamok))
         cursor.executemany("INSERT OR IGNORE INTO Panel (Panel_Szam) VALUES (?)", [(p,) for p in panel_szamok_list])
         conn.commit()
         print(f"{len(panel_szamok_list)} panel azonosító feltöltve.")
 
-        # 2. Mérési adatok UNPIVOT-olása
-        # Az oszlop indexek csoportosítása (time, valueY)
-        # 0: Panel 1 Time, 1: Panel 1 ValueY, 2: Panel 2 Time, 3: Panel 2 ValueY, stb.
+    except FileNotFoundError:
+        print(f"Hiba: A fájl ({HUTOPANELEK_FILE}) nem található.")
+        return  # Kilép a függvényből, ha a fájl nincs meg
 
-        panel_columns = {}  # {panel_szam: (time_index, valueY_index)}
-        for p_num in panel_szamok_list:
-            # Megkeresi a "Panel X Time" és "Panel X ValueY" oszlopok indexeit
-            time_col_name = f"Panel hőfok {p_num} [°C] Time"
-            # A ValueY oszlop neve a CSV-ben nem tartalmazza a ValueY tagot a fájl eleje szerint:
-            value_col_name = f"Panel hőfok {p_num} [°C]"  # <-- EZ A KORREKT NÉV!
+    if not panel_szamok_list:
+        print("Nincsenek panel adatok a folytatáshoz.")
+        return  # Kilép, ha a panel azonosítók száma 0
 
-            try:
-                time_idx = header.index(time_col_name)
-                value_idx = header.index(value_col_name)
-                panel_columns[p_num] = (time_idx, value_idx)
-            except ValueError:
-                print(f"Figyelem: Hiányzik a(z) {p_num} panel valamelyik oszlopa.")
+    # --- 2. Mérési adatok UNPIVOT-olása (A fájl újraolvasása) ---
+    meres_data = []
+    panel_columns = {}  # {panel_szam: (time_index, valueY_index)}
 
-        for row in reader:
-            if not row: continue
+    # Az oszlop indexek csoportosítása (time, valueY) - Ugyanaz a logika, mint korábban
+    for p_num in panel_szamok_list:
+        time_col_name = f"Panel hőfok {p_num} [°C] Time"
+        value_col_name = f"Panel hőfok {p_num} [°C]"  # <-- A korrigált név!
+        try:
+            time_idx = header.index(time_col_name)
+            value_idx = header.index(value_col_name)
+            panel_columns[p_num] = (time_idx, value_idx)
+        except ValueError:
+            print(f"Figyelem: Hiányzik a(z) {p_num} panel valamelyik oszlopa.")
 
-            # UNPIVOT (oszlopokból sorok)
-            for p_num, (time_idx, value_idx) in panel_columns.items():
-                try:
-                    meret_idopont = row[time_idx]
-                    hofok_ertek_str = row[value_idx].replace(',', '.')  # Vessző cseréje pontra
-                    hofok_ertek = float(hofok_ertek_str)
+    try:
+        with open(HUTOPANELEK_FILE, 'r', encoding='cp1250') as f:
+            reader = csv.reader(f, delimiter=';')
+            next(reader)  # Átugorjuk a fejlécet, a reader most az első adatsornál áll!
 
-                    # (Időpont, Panel_Szam_FK, Hofok_Ertek)
-                    meres_data.append((meret_idopont, p_num, hofok_ertek))
-                except (IndexError, ValueError) as e:
-                    # Hibás vagy hiányzó adat esetén
-                    # print(f"Hiba a mérési adatban: {e} - Panel: {p_num}, Sor: {row}")
-                    pass  # Adattisztítás része, de most átugorjuk
+            for row in reader:
+                if not row: continue
 
-    cursor.executemany("""
-                       INSERT OR IGNORE INTO Homerseklet_Meretek (Meret_Idopont, Panel_Szam_FK, Hofok_Ertek)
-                       VALUES (?, ?, ?)
-                       """, meres_data)
-    conn.commit()
-    print(f"{len(meres_data)} mérési adat rekord feltöltve.")
+                # UNPIVOT (oszlopokból sorok)
+                for p_num, (time_idx, value_idx) in panel_columns.items():
+                    try:
+                        meret_idopont = row[time_idx]
+                        hofok_ertek_str = row[value_idx].replace(',', '.')  # Vessző cseréje pontra
+                        hofok_ertek = float(hofok_ertek_str)
+
+                        # (Időpont, Panel_Szam_FK, Hofok_Ertek)
+                        meres_data.append((meret_idopont, p_num, hofok_ertek))
+                    except (IndexError, ValueError):
+                        pass
+
+        # Homerseklet_Meretek tábla feltöltése
+        cursor.executemany("""
+                           INSERT
+                           OR IGNORE INTO Homerseklet_Meretek (Meret_Idopont, Panel_Szam_FK, Hofok_Ertek)
+                           VALUES (?, ?, ?)
+                           """, meres_data)
+        conn.commit()
+        print(f"{len(meres_data)} mérési adat rekord feltöltve.")
+
+    except FileNotFoundError:
+        print(f"Hiba: A fájl ({HUTOPANELEK_FILE}) nem található.")
 
 
 def update_adag_fk(conn):
