@@ -118,24 +118,20 @@ def load_hutopanelek(conn):
     """Beolvassa, UNPIVOT-olja és feltölti a Panel és Homerseklet_Meretek táblákat."""
     print("Hűtőpanelek adatainak normalizálása és feltöltése...")
 
-    # --- 1. Fejlécek elemzése (Panel_Szam kinyerése) ---
+    # --- 1. Fejlécek elemzése (Panel_Szam kinyerése - ÚJ, Szuper Robusztus RegEx) ---
     panel_szamok = set()
     try:
         with open(HUTOPANELEK_FILE, 'r', encoding='cp1250') as f:
             reader = csv.reader(f, delimiter=';')
             header = next(reader)  # Leolvassuk a fejlécet
 
-        for col_index, col_name in enumerate(header):
-            # Csak a 'Time' oszlopokból vonjuk ki a számot
-            if "Panel hőfok" in col_name and "Time" in col_name:
-                try:
-                    # Robusztus RegEx: csak a számot keresi a "hőfok" után
-                    match = re.search(r"hőfok\s*(\d+)", col_name)
-                    if match:
-                        panel_num = int(match.group(1))
-                        panel_szamok.add(panel_num)
-                except:
-                    continue
+        for col_name in header:
+            # Csak a számot keresi a [ előtt (Pl.: 1 [°C] Time)
+            # A minta: Panel_Szám [
+            match = re.search(r"(\d+)\s*\[", col_name)
+            if match:
+                panel_num = int(match.group(1))
+                panel_szamok.add(panel_num)
 
         # Panel tábla feltöltése
         cursor = conn.cursor()
@@ -146,30 +142,37 @@ def load_hutopanelek(conn):
 
     except FileNotFoundError:
         print(f"Hiba: A fájl ({HUTOPANELEK_FILE}) nem található.")
-        return  # Kilép a függvényből, ha a fájl nincs meg
+        return
 
     if not panel_szamok_list:
         print("Nincsenek panel adatok a folytatáshoz.")
-        return  # Kilép, ha a panel azonosítók száma 0
+        return
 
-    # --- 2. Mérési adatok UNPIVOT-olása (A fájl újraolvasása) ---
+    # --- 2. Mérési adatok UNPIVOT-olása (A fájl újraolvasása - INDEXELÉS FIX) ---
     meres_data = []
     panel_columns = {}  # {panel_szam: (time_index, valueY_index)}
 
-    # Az oszlop indexek csoportosítása (time, valueY)
+    # Keresünk indexeket a kinyert panel_szamok alapján.
     for p_num in panel_szamok_list:
-        time_col_name = f"Panel hőfok {p_num} [°C] Time"
-        # Visszaállítjuk a helyes oszlopnevet a ValueY utótaggal!
-        value_col_name = f"Panel hőfok {p_num} [°C] ValueY"
+        time_idx = -1
+        value_idx = -1
 
-        try:
-            # Megkeresi az oszlop indexeket az előzőleg beolvasott fejléc alapján (header)
-            time_idx = header.index(time_col_name)
-            value_idx = header.index(value_col_name)
+        # A legrobusztusabb keresési minta, ami csak a számra és a Time/ValueY-ra támaszkodik:
+        time_pattern = f"{p_num} [°C] Time"
+        value_pattern = f"{p_num} [°C] ValueY"
+
+        # Végigmegyünk a fejléceken és KÉZZEL keressük meg az indexeket!
+        for i, col_name in enumerate(header):
+            # Csak azt nézzük, hogy tartalmazza-e a szükséges mintát a név végén!
+            if col_name.endswith(time_pattern):
+                time_idx = i
+            elif col_name.endswith(value_pattern):
+                value_idx = i
+
+        if time_idx != -1 and value_idx != -1:
             panel_columns[p_num] = (time_idx, value_idx)
-        except ValueError:
-            # Csak figyelmeztetés, ha egy oszlop hiányzik
-            print(f"Figyelem: Hiányzik a(z) {p_num} panel valamelyik oszlopa.")
+        else:
+            print(f"Figyelem: Hiányzik a(z) {p_num} panel valamelyik oszlopa (Indexelés hiba).")
             continue  # Továbbmegy a következő panelre
 
     try:
