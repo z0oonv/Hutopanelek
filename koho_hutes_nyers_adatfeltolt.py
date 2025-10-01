@@ -2,7 +2,12 @@ import pandas as pd
 import sqlite3
 
 # 1. Adatok beolvasása CSV fájlból
-df= pd.read_csv (r'E:\egyetem\3. FÉLÉV - TÁRGYAK\Adatbázisok (6)\Hutopanelek.csv')
+df = pd.read_csv(
+    r'E:\egyetem\3. FÉLÉV - TÁRGYAK\Adatbázisok (6)\hf_gyak\Hutopanelek.csv',
+    sep="\t",             # TAB szeparátor
+    decimal=",",          # vessző a tizedesjel
+    encoding="utf-8"      # biztos, ami biztos
+)
 # 2. Adatok írása SQLite adatbázisba
 conn = sqlite3.connect(r'E:\egyetem\3. FÉLÉV - TÁRGYAK\Adatbázisok (6)\hf_gyak\koho_hutes.db')
 df.to_sql(name='Hutopanelek', con=conn, if_exists='replace', index=False)
