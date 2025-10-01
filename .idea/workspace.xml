@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ddf1c56c-974e-49a7-8e0a-901245ade616" name="Changes" comment="Alap kiindulás.&#10;A feltöltés sikeres a programmal, de az adatok ömlesztettek, szét kell szedni és a felesleget kivenni">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/data_source_mapping.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/data_source_mapping.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="ddf1c56c-974e-49a7-8e0a-901245ade616" name="Changes" comment="Próbálkozás adat feltöltéssel normalizált táblába.Hűtőtábla szivat. REGex behozása, robusztussá tétel, ill az into or ignore használata">
       <change beforePath="$PROJECT_DIR$/huto_panel_1.py" beforeDir="false" afterPath="$PROJECT_DIR$/huto_panel_1.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -79,7 +75,7 @@
       <workItem from="1759246011949" duration="6010000" />
       <workItem from="1759306109213" duration="425000" />
       <workItem from="1759306557255" duration="12364000" />
-      <workItem from="1759329882713" duration="940000" />
+      <workItem from="1759329882713" duration="1323000" />
     </task>
     <task id="LOCAL-00001" summary="Alap kiindulás.&#10;Hibára futott, mert a csv file-ban az elválasztás nem vessző hanem/Tab és tizedes vessző probléma.">
       <option name="closed" value="true" />
@@ -137,7 +133,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759329816008</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Próbálkozás adat feltöltéssel normalizált táblába.Hűtőtábla szivat. REGex behozása, robusztussá tétel, ill az into or ignore használata">
+      <option name="closed" value="true" />
+      <created>1759330915145</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1759330915145</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -146,7 +150,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Alap kiindulás.&#10;Hibára futott, mert a csv file-ban az elválasztás nem vessző hanem/Tab és tizedes vessző probléma." />
     <MESSAGE value="Alap kiindulás.&#10;A feltöltés sikeres a programmal, de az adatok ömlesztettek, szét kell szedni és a felesleget kivenni" />
-    <option name="LAST_COMMIT_MESSAGE" value="Alap kiindulás.&#10;A feltöltés sikeres a programmal, de az adatok ömlesztettek, szét kell szedni és a felesleget kivenni" />
+    <MESSAGE value="Próbálkozás adat feltöltéssel normalizált táblába.Hűtőtábla szivat. REGex behozása, robusztussá tétel, ill az into or ignore használata" />
+    <option name="LAST_COMMIT_MESSAGE" value="Próbálkozás adat feltöltéssel normalizált táblába.Hűtőtábla szivat. REGex behozása, robusztussá tétel, ill az into or ignore használata" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

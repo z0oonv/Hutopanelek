@@ -154,7 +154,9 @@ def load_hutopanelek(conn):
         for p_num in panel_szamok_list:
             # Megkeresi a "Panel X Time" és "Panel X ValueY" oszlopok indexeit
             time_col_name = f"Panel hőfok {p_num} [°C] Time"
-            value_col_name = f"Panel hőfok {p_num} [°C] ValueY"
+            # A ValueY oszlop neve a CSV-ben nem tartalmazza a ValueY tagot a fájl eleje szerint:
+            value_col_name = f"Panel hőfok {p_num} [°C]"  # <-- EZ A KORREKT NÉV!
+
             try:
                 time_idx = header.index(time_col_name)
                 value_idx = header.index(value_col_name)
