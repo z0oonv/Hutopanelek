@@ -130,7 +130,7 @@ def load_hutopanelek(conn):
             # Csak a 'Time' oszlopokból vonjuk ki a számot
             if "Panel hőfok" in col_name and "Time" in col_name:
                 try:
-                    # Kinyeri a számot a "Panel hőfok X [" mintából
+                    # Keresi a számot a "Panel hőfok " és a " [" között
                     match = re.search(r"Panel hőfok (\d+) \[", col_name)
 
                     if match:
