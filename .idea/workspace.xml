@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ddf1c56c-974e-49a7-8e0a-901245ade616" name="Changes" comment="Def load_hutopanelek(conn) cseréje" />
+    <list default="true" id="ddf1c56c-974e-49a7-8e0a-901245ade616" name="Changes" comment="Def load_hutopanelek(conn) cseréje javult már.&#10;Kell még lazítani a szabályokon.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/huto_panel_1.py" beforeDir="false" afterPath="$PROJECT_DIR$/huto_panel_1.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -77,6 +80,7 @@
       <workItem from="1759331363666" duration="356000" />
       <workItem from="1759331733371" duration="390000" />
       <workItem from="1759332136918" duration="220000" />
+      <workItem from="1759332378300" duration="2513000" />
     </task>
     <task id="LOCAL-00001" summary="Alap kiindulás.&#10;Hibára futott, mert a csv file-ban az elválasztás nem vessző hanem/Tab és tizedes vessző probléma.">
       <option name="closed" value="true" />
@@ -182,7 +186,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759332351798</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Def load_hutopanelek(conn) cseréje javult már.&#10;Kell még lazítani a szabályokon">
+      <option name="closed" value="true" />
+      <created>1759332854131</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1759332854131</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -195,7 +207,8 @@
     <MESSAGE value="Még javítás a fejléc hiba" />
     <MESSAGE value="Még javítás a fejléc hiba." />
     <MESSAGE value="Def load_hutopanelek(conn) cseréje" />
-    <option name="LAST_COMMIT_MESSAGE" value="Def load_hutopanelek(conn) cseréje" />
+    <MESSAGE value="Def load_hutopanelek(conn) cseréje javult már.&#10;Kell még lazítani a szabályokon" />
+    <option name="LAST_COMMIT_MESSAGE" value="Def load_hutopanelek(conn) cseréje javult már.&#10;Kell még lazítani a szabályokon" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -208,7 +221,7 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/koho_hutes$huto_panel_1.coverage" NAME="huto_panel_1 Coverage Results" MODIFIED="1759332142913" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/koho_hutes$huto_panel_1.coverage" NAME="huto_panel_1 Coverage Results" MODIFIED="1759385105223" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/koho_hutes$koho_hutes_nyers_adatfeltolt.coverage" NAME="koho_hutes_nyers_adatfeltolt Coverage Results" MODIFIED="1759306578198" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/koho_hutes$Time_filter.coverage" NAME="Time_filter Coverage Results" MODIFIED="1759320077213" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/koho_hutes$Doctests_in_sql.coverage" NAME="Doctests in sql Coverage Results" MODIFIED="1759304691790" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/.venv/Lib/site-packages/pandas/io" />

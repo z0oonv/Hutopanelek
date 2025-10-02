@@ -161,19 +161,37 @@ def load_hutopanelek(conn):
         time_pattern = f"{p_num} [°C] Time"
         value_pattern = f"{p_num} [°C] ValueY"
 
-        # Végigmegyünk a fejléceken és KÉZZEL keressük meg az indexeket!
-        for i, col_name in enumerate(header):
-            # Csak azt nézzük, hogy tartalmazza-e a szükséges mintát a név végén!
-            if col_name.endswith(time_pattern):
-                time_idx = i
-            elif col_name.endswith(value_pattern):
-                value_idx = i
+        # --- 2. Mérési adatok UNPIVOT-olása (A fájl újraolvasása - INDEXELÉS FIX) ---
+        meres_data = []
+        panel_columns = {}  # {panel_szam: (time_index, valueY_index)}
 
-        if time_idx != -1 and value_idx != -1:
-            panel_columns[p_num] = (time_idx, value_idx)
-        else:
-            print(f"Figyelem: Hiányzik a(z) {p_num} panel valamelyik oszlopa (Indexelés hiba).")
-            continue  # Továbbmegy a következő panelre
+        # Keresünk indexeket a kinyert panel_szamok alapján.
+        for p_num in panel_szamok_list:
+            time_idx = -1
+            value_idx = -1
+
+            # A keresés stringje:
+            # PÉLDÁUL: "Panel hofok 1 [°C] Time"
+            time_needle = f"Time"
+            value_needle = f"ValueY"
+            num_needle = f" {p_num} ["  # Panel számot a szögletes zárójel előtt keressük
+
+            # Végigmegyünk a fejléceken és KÉZZEL keressük meg az indexeket!
+            for i, col_name in enumerate(header):
+                # A time oszlopnak tartalmaznia kell a panel számot, és a 'Time' szót
+                if col_name.find(num_needle) != -1 and col_name.find(time_needle) != -1:
+                    time_idx = i
+
+                # A value oszlopnak tartalmaznia kell a panel számot, és a 'ValueY' szót
+                if col_name.find(num_needle) != -1 and col_name.find(value_needle) != -1:
+                    value_idx = i
+
+            if time_idx != -1 and value_idx != -1:
+                panel_columns[p_num] = (time_idx, value_idx)
+            else:
+                # Ez a figyelmeztetés már nem fut le a sikeres indexelés után.
+                print(f"Figyelem: Hiányzik a(z) {p_num} panel valamelyik oszlopa (Indexelés hiba).")
+                continue
 
     try:
         # Fájl újbóli megnyitása a mérések olvasásához
