@@ -11,76 +11,38 @@ def initialize_database(conn):
     """Létrehozza (és törli!) a táblákat."""
     cursor = conn.cursor()
 
-    # 1. KÉNYTELEN VAGYUNK TÖRÖLNI A TÁBLÁKAT, ha új adatot töltünk be!
+    # 1. KÖTELEZŐ: Töröljük a táblákat, hogy ne halmozódjon fel az adat
     drop_tables_sql = """
                       DROP TABLE IF EXISTS Homerseklet_Meretek;
                       DROP TABLE IF EXISTS Adag;
-                      DROP TABLE IF EXISTS Panel; \
+                      DROP TABLE IF EXISTS Panel;
                       """
-    cursor = conn.cursor()
+    cursor.executescript(drop_tables_sql) # <--- Ezt a futtatást felejtette el
+
     # Létrehozó SQL-t itt kell futtatni (lásd 3.1. pont)
     create_tables_sql = """
-                        CREATE TABLE IF NOT EXISTS Panel \
-                        ( \
-                            Panel_Szam \
-                            INTEGER \
-                            PRIMARY \
-                            KEY \
+                        CREATE TABLE IF NOT EXISTS Panel 
+                        ( 
+                            Panel_Szam INTEGER PRIMARY KEY 
                         );
-                        CREATE TABLE IF NOT EXISTS Adag \
-                        ( \
-                            Adag_Szam \
-                            INTEGER \
-                            PRIMARY \
-                            KEY, \
-                            Kezdet_Idopont \
-                            TEXT \
-                            NOT \
-                            NULL, \
-                            Vege_Idopont \
-                            TEXT \
-                            NOT \
-                            NULL, \
-                            Adag_Kozti_Ido \
-                            TEXT, \
-                            Adag_Ido \
-                            TEXT
+                        CREATE TABLE IF NOT EXISTS Adag 
+                        ( 
+                            Adag_Szam INTEGER PRIMARY KEY, 
+                            Kezdet_Idopont TEXT NOT NULL, 
+                            Vege_Idopont TEXT NOT NULL, 
+                            Adag_Kozti_Ido TEXT, 
+                            Adag_Ido TEXT
                         );
-                        CREATE TABLE IF NOT EXISTS Homerseklet_Meretek \
-                        ( \
-                            Meret_Id \
-                            INTEGER \
-                            PRIMARY \
-                            KEY \
-                            AUTOINCREMENT, \
-                            Meret_Idopont \
-                            TEXT \
-                            NOT \
-                            NULL, \
-                            Panel_Szam_FK \
-                            INTEGER \
-                            NOT \
-                            NULL, \
-                            Hofok_Ertek \
-                            REAL, \
-                            Adag_Szam_FK \
-                            INTEGER, \
-                            FOREIGN \
-                            KEY \
-                        ( \
-                            Panel_Szam_FK \
-                        ) REFERENCES Panel \
-                        ( \
-                            Panel_Szam \
-                        ),
-                            FOREIGN KEY \
-                        ( \
-                            Adag_Szam_FK \
-                        ) REFERENCES Adag \
-                        ( \
-                            Adag_Szam \
-                        )
-                            ); \
+                        CREATE TABLE IF NOT EXISTS Homerseklet_Meretek 
+                        ( 
+                            Meret_Id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                            Meret_Idopont TEXT NOT NULL, 
+                            Panel_Szam_FK INTEGER NOT NULL, 
+                            Hofok_Ertek REAL, 
+                            Adag_Szam_FK INTEGER, 
+                            FOREIGN KEY (Panel_Szam_FK) REFERENCES Panel (Panel_Szam),
+                            FOREIGN KEY (Adag_Szam_FK) REFERENCES Adag (Adag_Szam)
+                        );
                         """
     cursor.executescript(create_tables_sql)
     conn.commit()
