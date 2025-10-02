@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ddf1c56c-974e-49a7-8e0a-901245ade616" name="Changes" comment="Def load_hutopanelek(conn) cseréje javult már.&#10;Kell még lazítani a szabályokon.">
+    <list default="true" id="ddf1c56c-974e-49a7-8e0a-901245ade616" name="Changes" comment="Az adat feltöltés rendben megtörtén, azonban 86400 sor helyett a 4 szerese lett a sor.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/huto_panel_1.py" beforeDir="false" afterPath="$PROJECT_DIR$/huto_panel_1.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,6 +80,7 @@
       <workItem from="1759331733371" duration="390000" />
       <workItem from="1759332136918" duration="220000" />
       <workItem from="1759332378300" duration="2513000" />
+      <workItem from="1759388099719" duration="1508000" />
     </task>
     <task id="LOCAL-00001" summary="Alap kiindulás.&#10;Hibára futott, mert a csv file-ban az elválasztás nem vessző hanem/Tab és tizedes vessző probléma.">
       <option name="closed" value="true" />
@@ -194,7 +194,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759332854131</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Az adat feltöltés rendben megtörtén, azonban 86400 sor helyett a 4 szerese lett a sor.">
+      <option name="closed" value="true" />
+      <created>1759395413828</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1759395413828</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -208,7 +216,8 @@
     <MESSAGE value="Még javítás a fejléc hiba." />
     <MESSAGE value="Def load_hutopanelek(conn) cseréje" />
     <MESSAGE value="Def load_hutopanelek(conn) cseréje javult már.&#10;Kell még lazítani a szabályokon" />
-    <option name="LAST_COMMIT_MESSAGE" value="Def load_hutopanelek(conn) cseréje javult már.&#10;Kell még lazítani a szabályokon" />
+    <MESSAGE value="Az adat feltöltés rendben megtörtén, azonban 86400 sor helyett a 4 szerese lett a sor." />
+    <option name="LAST_COMMIT_MESSAGE" value="Az adat feltöltés rendben megtörtén, azonban 86400 sor helyett a 4 szerese lett a sor." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
