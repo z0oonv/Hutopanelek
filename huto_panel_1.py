@@ -243,38 +243,35 @@ def update_adag_fk(conn):
     print("Adag FK frissítése időintervallum alapján...")
     cursor = conn.cursor()
 
-    # 1. Beolvassuk az adagok időintervallumait
-    adagok = cursor.execute("SELECT Adag_Szam, Kezdet_Idopont, Vege_Idopont FROM Adag").fetchall()
-
-    # 2. Beolvassuk a mérési adatok egyedi időpontjait
+    # 1. Beolvassuk a mérési adatok egyedi időpontjait
+    # Az Adag táblában lévő . (pont) cseréjét kell elvégeznünk SQL-ben
     meresi_idopontok = cursor.execute("SELECT DISTINCT Meret_Idopont FROM Homerseklet_Meretek").fetchall()
 
-    # 3. Kiszámoljuk a megfeleltetéseket
-    update_params = []  # (Adag_Szam_FK, Meret_Idopont)
+    update_params = []
 
     for meret_idopont_tuple in meresi_idopontok:
         meret_idopont = meret_idopont_tuple[0]
 
-        # SQL-ben a TEXT típusú DATETIME összehasonlítás működik az "YYYY-MM-DD HH:MM:SS" formátum esetén!
-        # A WHERE feltételt SQLite-ban futtatva gyorsabb, mint Pythonban iterálni több ezer/millió soron.
+        # A mérés időpontjában is cseréljük a pontot kötőjelre az összehasonlításhoz
+        meret_idopont_sql = meret_idopont.replace('.', '-')
 
-        # Példa lekérdezés:
-        # SELECT Adag_Szam FROM Adag WHERE ? BETWEEN Kezdet_Idopont AND Vege_Idopont
-
-        # Mivel sok update lesz, először megkeressük, hogy melyik Adaghoz tartozik az időpont
-        # (Feltételezzük, hogy egy időponthoz pontosan egy Adag tartozik)
+        # SQL lekérdezés:
+        # 1. REPLACE(Kezdet_Idopont, '.', '-') : Átkonvertálja az Adag táblában lévő dátumot SQLite formátumra
+        # 2. Az Adag táblában a LIKE % formátumot használjuk, hogy megtaláljuk, de az SQL-es DATE/TIME konverzió sokkal megbízhatóbb
 
         matching_adag = cursor.execute("""
                                        SELECT Adag_Szam
                                        FROM Adag
-                                       WHERE ? BETWEEN Kezdet_Idopont AND Vege_Idopont
-                                       """, (meret_idopont,)).fetchone()
+                                       WHERE DATETIME(?) BETWEEN
+                                                 DATETIME(REPLACE(Kezdet_Idopont, '.', '-')) AND
+                                                 DATETIME(REPLACE(Vege_Idopont, '.', '-'))
+                                       """, (meret_idopont_sql,)).fetchone()
 
         if matching_adag:
             adag_szam_fk = matching_adag[0]
             update_params.append((adag_szam_fk, meret_idopont))
 
-    # 4. Végrehajtjuk a tömeges frissítést
+    # Tömeges frissítés
     cursor.executemany("""
                        UPDATE Homerseklet_Meretek
                        SET Adag_Szam_FK = ?
