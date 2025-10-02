@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ddf1c56c-974e-49a7-8e0a-901245ade616" name="Changes" comment="adag_fk frissítés jav">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="ddf1c56c-974e-49a7-8e0a-901245ade616" name="Changes" comment="tisztalappal indulás" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -81,7 +79,7 @@
       <workItem from="1759332136918" duration="220000" />
       <workItem from="1759332378300" duration="2513000" />
       <workItem from="1759388099719" duration="3732000" />
-      <workItem from="1759413594493" duration="326000" />
+      <workItem from="1759413594493" duration="662000" />
     </task>
     <task id="LOCAL-00001" summary="Alap kiindulás.&#10;Hibára futott, mert a csv file-ban az elválasztás nem vessző hanem/Tab és tizedes vessző probléma.">
       <option name="closed" value="true" />
@@ -227,7 +225,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759413246111</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="tisztalappal indulás">
+      <option name="closed" value="true" />
+      <created>1759414182835</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1759414182835</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -244,7 +250,8 @@
     <MESSAGE value="Az adat feltöltés rendben megtörtén, azonban 86400 sor helyett a 4 szerese lett a sor." />
     <MESSAGE value="tábla törlés és létrehozás újra" />
     <MESSAGE value="adag_fk frissítés jav" />
-    <option name="LAST_COMMIT_MESSAGE" value="adag_fk frissítés jav" />
+    <MESSAGE value="tisztalappal indulás" />
+    <option name="LAST_COMMIT_MESSAGE" value="tisztalappal indulás" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

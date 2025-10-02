@@ -200,47 +200,31 @@ def load_hutopanelek(conn):
 def update_adag_fk(conn):
     """
     Frissíti a Homerseklet_Meretek táblát az Adag_Szam_FK-val
-    a mérési időpont és az adag időintervalluma alapján.
+    a mérési időpont és az adag időintervalluma alapján, egyetlen
+    optimalizált SQL paranccsal.
     """
-    print("Adag FK frissítése időintervallum alapján...")
+    print("Adag FK frissítése időintervallum alapján (Optimalizált SQL)...")
     cursor = conn.cursor()
 
-    # 1. Beolvassuk a mérési adatok egyedi időpontjait
-    # Az Adag táblában lévő . (pont) cseréjét kell elvégeznünk SQL-ben
-    meresi_idopontok = cursor.execute("SELECT DISTINCT Meret_Idopont FROM Homerseklet_Meretek").fetchall()
+    # EGYETLEN SQL UPDATE utasítás korrelált allekérdezéssel
+    # DATETIME(REPLACE(..., '.', '-')) biztosítja a korrekt dátumkezelést SQLite-ban
+    update_sql = """
+                 UPDATE Homerseklet_Meretek
+                 SET Adag_Szam_FK = (SELECT Adag_Szam \
+                                     FROM Adag \
+                                     WHERE DATETIME(REPLACE(Homerseklet_Meretek.Meret_Idopont, '.', '-')) \
+                                               BETWEEN DATETIME(REPLACE(Adag.Kezdet_Idopont, '.', '-')) \
+                                               AND DATETIME(REPLACE(Adag.Vege_Idopont, '.', '-')))
+                 WHERE Adag_Szam_FK IS NULL; -- Csak az üreseket frissítjük
+                 """
 
-    update_params = []
-
-    for meret_idopont_tuple in meresi_idopontok:
-        meret_idopont = meret_idopont_tuple[0]
-
-        # A mérés időpontjában is cseréljük a pontot kötőjelre az összehasonlításhoz
-        meret_idopont_sql = meret_idopont.replace('.', '-')
-
-        # SQL lekérdezés:
-        # 1. REPLACE(Kezdet_Idopont, '.', '-') : Átkonvertálja az Adag táblában lévő dátumot SQLite formátumra
-        # 2. Az Adag táblában a LIKE % formátumot használjuk, hogy megtaláljuk, de az SQL-es DATE/TIME konverzió sokkal megbízhatóbb
-
-        matching_adag = cursor.execute("""
-                                       SELECT Adag_Szam
-                                       FROM Adag
-                                       WHERE DATETIME(?) BETWEEN
-                                                 DATETIME(REPLACE(Kezdet_Idopont, '.', '-')) AND
-                                                 DATETIME(REPLACE(Vege_Idopont, '.', '-'))
-                                       """, (meret_idopont_sql,)).fetchone()
-
-        if matching_adag:
-            adag_szam_fk = matching_adag[0]
-            update_params.append((adag_szam_fk, meret_idopont))
-
-    # Tömeges frissítés
-    cursor.executemany("""
-                       UPDATE Homerseklet_Meretek
-                       SET Adag_Szam_FK = ?
-                       WHERE Meret_Idopont = ?
-                       """, update_params)
+    cursor.execute(update_sql)
     conn.commit()
-    print(f"{len(update_params)} egyedi időponthoz találtunk Adag FK-t és frissítettünk.")
+
+    # Ellenőrizzük, hány sor frissült sikeresen
+    frissitett_sorok_szama = \
+    cursor.execute("SELECT COUNT(Meret_Id) FROM Homerseklet_Meretek WHERE Adag_Szam_FK IS NOT NULL").fetchone()[0]
+    print(f"{frissitett_sorok_szama} mérési adathoz találtunk Adag FK-t és frissítettünk.")
 
 
 # --- Fő program futtatása ---
