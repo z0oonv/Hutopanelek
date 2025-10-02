@@ -8,7 +8,15 @@ ADAGOK_FILE = r'E:\egyetem\3. FÉLÉV - TÁRGYAK\Adatbázisok (6)\hf_gyak\Adagok
 
 
 def initialize_database(conn):
-    """Létrehozza a táblákat."""
+    """Létrehozza (és törli!) a táblákat."""
+    cursor = conn.cursor()
+
+    # 1. KÉNYTELEN VAGYUNK TÖRÖLNI A TÁBLÁKAT, ha új adatot töltünk be!
+    drop_tables_sql = """
+                      DROP TABLE IF EXISTS Homerseklet_Meretek;
+                      DROP TABLE IF EXISTS Adag;
+                      DROP TABLE IF EXISTS Panel; \
+                      """
     cursor = conn.cursor()
     # Létrehozó SQL-t itt kell futtatni (lásd 3.1. pont)
     create_tables_sql = """
