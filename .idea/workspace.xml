@@ -90,7 +90,7 @@
       <workItem from="1759388099719" duration="3732000" />
       <workItem from="1759413594493" duration="1434000" />
       <workItem from="1759740190644" duration="4251000" />
-      <workItem from="1759746359300" duration="4649000" />
+      <workItem from="1759746359300" duration="5241000" />
     </task>
     <task id="LOCAL-00001" summary="Alap kiindulás.&#10;Hibára futott, mert a csv file-ban az elválasztás nem vessző hanem/Tab és tizedes vessző probléma.">
       <option name="closed" value="true" />
@@ -332,7 +332,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759750688704</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="def update adag frissítés">
+      <option name="closed" value="true" />
+      <created>1759753521947</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1759753521947</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
