@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ddf1c56c-974e-49a7-8e0a-901245ade616" name="Changes" comment="def update adag frissítés" />
+    <list default="true" id="ddf1c56c-974e-49a7-8e0a-901245ade616" name="Changes" comment="def update adag frissítés">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/huto_panel_1.py" beforeDir="false" afterPath="$PROJECT_DIR$/huto_panel_1.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -35,39 +38,45 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;Python tests.Doctests in sql.executor&quot;: &quot;Debug&quot;,
-    &quot;Python.Time_filter.executor&quot;: &quot;Run&quot;,
-    &quot;Python.adat_tisztitas.executor&quot;: &quot;Run&quot;,
-    &quot;Python.huto_panel_1.executor&quot;: &quot;Run&quot;,
-    &quot;Python.koho_hutes_nyers_adatfeltolt.executor&quot;: &quot;Run&quot;,
-    &quot;Python.masodpercteszt.executor&quot;: &quot;Run&quot;,
-    &quot;Python.oszlop nevek.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.general&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python tests.Doctests in sql.executor": "Debug",
+    "Python.Time_filter.executor": "Run",
+    "Python.adat_tisztitas.executor": "Run",
+    "Python.huto_panel_1.executor": "Run",
+    "Python.koho_hutes_nyers_adatfeltolt.executor": "Run",
+    "Python.kohohutes_1027.executor": "Run",
+    "Python.masodpercteszt.executor": "Run",
+    "Python.oszlop nevek.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/zamb/PycharmProjects/koho_hutes",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.general",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;sqlite&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "sqlite"
     ]
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\zamb\PycharmProjects\koho_hutes" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-9c94529fcfe0-JavaScript-PY-252.26199.168" />
         <option value="bundled-python-sdk-b3d66beaba9a-c6efb3732140-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-252.26199.168" />
       </set>
     </attachedChunks>
@@ -91,7 +100,9 @@
       <workItem from="1759413594493" duration="1434000" />
       <workItem from="1759740190644" duration="4251000" />
       <workItem from="1759746359300" duration="5969000" />
-      <workItem from="1759754793876" duration="1322000" />
+      <workItem from="1759754793876" duration="1910000" />
+      <workItem from="1759763719838" duration="660000" />
+      <workItem from="1760704288411" duration="29000" />
     </task>
     <task id="LOCAL-00001" summary="Alap kiindulás.&#10;Hibára futott, mert a csv file-ban az elválasztás nem vessző hanem/Tab és tizedes vessző probléma.">
       <option name="closed" value="true" />
@@ -373,7 +384,39 @@
       <option name="project" value="LOCAL" />
       <updated>1759755999782</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="def update adag frissítés">
+      <option name="closed" value="true" />
+      <created>1759756145504</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1759756145504</updated>
+    </task>
+    <task id="LOCAL-00037" summary="def update adag frissítés">
+      <option name="closed" value="true" />
+      <created>1759756223839</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1759756223839</updated>
+    </task>
+    <task id="LOCAL-00038" summary="def update adag frissítés">
+      <option name="closed" value="true" />
+      <created>1759756418014</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1759756418014</updated>
+    </task>
+    <task id="LOCAL-00039" summary="def update adag frissítés">
+      <option name="closed" value="true" />
+      <created>1761581790942</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1761581790942</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

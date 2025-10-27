@@ -13,7 +13,7 @@ def initialize_database(conn):
 
     # 1. KÖTELEZŐ: Töröljük a táblákat, hogy ne halmozódjon fel az adat
     drop_tables_sql = """
-                      DROP TABLE IF EXISTS Homerseklet_Meretek;
+                      DROP TABLE IF EXISTS Homerseklet_Meresek;
                       DROP TABLE IF EXISTS Adag;
                       DROP TABLE IF EXISTS Panel;
                       """
@@ -33,10 +33,10 @@ def initialize_database(conn):
                             Adag_Kozti_Ido TEXT, 
                             Adag_Ido TEXT
                         );
-                        CREATE TABLE IF NOT EXISTS Homerseklet_Meretek 
+                        CREATE TABLE IF NOT EXISTS Homerseklet_Meresek 
                         ( 
-                            Meret_Id INTEGER PRIMARY KEY AUTOINCREMENT, 
-                            Meret_Idopont TEXT NOT NULL, 
+                            Meres_Id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                            Meres_Idopont TEXT NOT NULL, 
                             Panel_Szam_FK INTEGER NOT NULL, 
                             Hofok_Ertek REAL, 
                             Adag_Szam_FK INTEGER, 
@@ -85,7 +85,7 @@ def load_adagok(conn):
 
 
 def load_hutopanelek(conn):
-    """Beolvassa, UNPIVOT-olja és feltölti a Panel és Homerseklet_Meretek táblákat."""
+    """Beolvassa, UNPIVOT-olja és feltölti a Panel és Homerseklet_Meresek táblákat."""
     print("Hűtőpanelek adatainak normalizálása és feltöltése...")
 
     # --- 1. Fejlécek elemzése (Panel_Szam kinyerése - ÚJ, Szuper Robusztus RegEx) ---
@@ -175,19 +175,19 @@ def load_hutopanelek(conn):
                 # UNPIVOT (oszlopokból sorok)
                 for p_num, (time_idx, value_idx) in panel_columns.items():
                     try:
-                        meret_idopont = row[time_idx]
+                        meres_idopont = row[time_idx]
                         hofok_ertek_str = row[value_idx].replace(',', '.')  # Vessző cseréje pontra
                         hofok_ertek = float(hofok_ertek_str)
 
                         # (Időpont, Panel_Szam_FK, Hofok_Ertek)
-                        meres_data.append((meret_idopont, p_num, hofok_ertek))
+                        meres_data.append((meres_idopont, p_num, hofok_ertek))
                     except (IndexError, ValueError):
                         pass
 
-        # Homerseklet_Meretek tábla feltöltése
+        # Homerseklet_Meresek tábla feltöltése
         cursor.executemany("""
                            INSERT
-                           OR IGNORE INTO Homerseklet_Meretek (Meret_Idopont, Panel_Szam_FK, Hofok_Ertek)
+                           OR IGNORE INTO Homerseklet_Meresek (Meres_Idopont, Panel_Szam_FK, Hofok_Ertek)
                            VALUES (?, ?, ?)
                            """, meres_data)
         conn.commit()
@@ -199,7 +199,7 @@ def load_hutopanelek(conn):
 
 def update_adag_fk(conn):
     """
-    Frissíti a Homerseklet_Meretek táblát az Adag_Szam_FK-val
+    Frissíti a Homerseklet_Meresek táblát az Adag_Szam_FK-val
     a mérési időpont és az adag időintervalluma alapján, egyetlen
     optimalizált SQL paranccsal.
     """
@@ -209,10 +209,10 @@ def update_adag_fk(conn):
     # EGYETLEN SQL UPDATE utasítás korrelált allekérdezéssel
     # DATETIME(REPLACE(..., '.', '-')) biztosítja a korrekt dátumkezelést SQLite-ban
     update_sql = """
-                 UPDATE Homerseklet_Meretek
+                 UPDATE Homerseklet_Meresek
                  SET Adag_Szam_FK = (SELECT Adag_Szam \
                                      FROM Adag \
-                                     WHERE DATETIME(REPLACE(Homerseklet_Meretek.Meret_Idopont, '.', '-')) \
+                                     WHERE DATETIME(REPLACE(Homerseklet_Meresek.Meres_Idopont, '.', '-')) \
                                                BETWEEN DATETIME(REPLACE(Adag.Kezdet_Idopont, '.', '-')) \
                                                AND DATETIME(REPLACE(Adag.Vege_Idopont, '.', '-')))
                  WHERE Adag_Szam_FK IS NULL; -- Csak az üreseket frissítjük
@@ -223,7 +223,7 @@ def update_adag_fk(conn):
 
     # Ellenőrizzük, hány sor frissült sikeresen
     frissitett_sorok_szama = \
-    cursor.execute("SELECT COUNT(Meret_Id) FROM Homerseklet_Meretek WHERE Adag_Szam_FK IS NOT NULL").fetchone()[0]
+    cursor.execute("SELECT COUNT(Meres_Id) FROM Homerseklet_Meresek WHERE Adag_Szam_FK IS NOT NULL").fetchone()[0]
     print(f"{frissitett_sorok_szama} mérési adathoz találtunk Adag FK-t és frissítettünk.")
 
 
