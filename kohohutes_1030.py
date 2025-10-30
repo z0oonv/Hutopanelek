@@ -12,7 +12,7 @@ def initialize_database(conn):
     """Létrehozza (és törli!) a táblákat."""
     cursor = conn.cursor()
 
-    # 1. KÖTELEZŐ: Töröljük a táblákat, hogy ne halmozódjon fel az adat
+    # 1. Töröljük a táblákat, hogy ne halmozódjon fel az adat
     drop_tables_sql = """
                       DROP TABLE IF EXISTS Homerseklet_Meresek;
                       DROP TABLE IF EXISTS Adag;
@@ -20,7 +20,7 @@ def initialize_database(conn):
                       """
     cursor.executescript(drop_tables_sql)
 
-    # Létrehozó SQL-t itt kell futtatni
+    # Táblák létrehozása
     create_tables_sql = """
                         CREATE TABLE IF NOT EXISTS Panel 
                         ( 
@@ -48,36 +48,37 @@ def initialize_database(conn):
     cursor.executescript(create_tables_sql)
     conn.commit()
 
-    def load_adagok(conn):
-        """Beolvassa és feltölti az Adag táblát."""
-        print("Adagok feltöltése...")
-        with open(ADAGOK_FILE, 'r', encoding='cp1250') as f:
-            reader = csv.reader(f, delimiter=';')
-            next(reader)
 
-            adag_data = []
-            for row in reader:
-                if not row or len(row) < 7 or not row[0]: continue
+def load_adagok(conn):
+    """Beolvassa és feltölti az Adag táblát, normalizálva a dátumokat."""
+    print("Adagok feltöltése...")
+    with open(ADAGOK_FILE, 'r', encoding='cp1250') as f:
+        reader = csv.reader(f, delimiter=';')
+        next(reader)
 
-                try:
-                    # Dátum/Idő oszlopok összefűzése:
-                    kezdet_dt = f"{row[1]} {row[2]}"  # Kezdet_DÁTUM Kezdet_IDŐ
-                    vege_dt = f"{row[3]} {row[4]}"  # Vége_DÁTUM Vége_IDŐ
+        adag_data = []
+        for row in reader:
+            if not row or len(row) < 7 or not row[0]: continue
 
-                    # 🚨 KRITIKUS JAVÍTÁS: Normalizálás Adag táblához
-                    kezdet_dt_clean = kezdet_dt.replace('.', '-')
-                    vege_dt_clean = vege_dt.replace('.', '-')
+            try:
+                # Dátum/Idő oszlopok összefűzése:
+                kezdet_dt = f"{row[1]} {row[2]}"
+                vege_dt = f"{row[3]} {row[4]}"
 
-                    kezdet_dt_final = re.sub(r' (\d):', r' 0\1:', kezdet_dt_clean)
-                    vege_dt_final = re.sub(r' (\d):', r' 0\1:', vege_dt_clean)
+                # KRITIKUS JAVÍTÁS: Normalizálás Adag táblához
+                kezdet_dt_clean = kezdet_dt.replace('.', '-')
+                vege_dt_clean = vege_dt.replace('.', '-')
 
-                    adag_data.append((
-                        int(row[0]),
-                        kezdet_dt_final,  # Normalizált dátum
-                        vege_dt_final,  # Normalizált dátum
-                        row[5],
-                        row[6]
-                    ))
+                kezdet_dt_final = re.sub(r' (\d):', r' 0\1:', kezdet_dt_clean)
+                vege_dt_final = re.sub(r' (\d):', r' 0\1:', vege_dt_clean)
+
+                adag_data.append((
+                    int(row[0]),
+                    kezdet_dt_final,  # Normalizált dátum
+                    vege_dt_final,  # Normalizált dátum
+                    row[5],
+                    row[6]
+                ))
             except (ValueError, IndexError) as e:
                 print(f"Hiba az adag adatok feldolgozásában: {e} - Sor: {row}")
 
@@ -91,7 +92,7 @@ def initialize_database(conn):
 
 
 def load_hutopanelek(conn):
-    """Betölti a Hutopanelek.csv fájl adatait a Homerseklet_Meresek táblába."""
+    """Betölti a Hutopanelek.csv fájl adatait a Homerseklet_Meresek táblába, normalizálva a dátumokat."""
     cursor = conn.cursor()
 
     panel_oszlopok = {
@@ -120,11 +121,8 @@ def load_hutopanelek(conn):
                         meres_idopont = row[time_index]
                         hofok_szoveg = row[value_index]
 
-                        # 🚨 KRITIKUS JAVÍTÁS: Dátum normalizálása
-                        # 1. Pontok cseréje kötőjelekre
+                        # KRITIKUS JAVÍTÁS: Dátum normalizálása
                         meres_idopont_clean = meres_idopont.replace('.', '-')
-
-                        # 2. Óra normalizálása (pl. " 1:" -> " 01:") a string összehasonlításhoz
                         meres_idopont_final = re.sub(r' (\d):', r' 0\1:', meres_idopont_clean)
 
                         # Tizedesvessző cseréje tizedespontra
@@ -141,34 +139,36 @@ def load_hutopanelek(conn):
         print(f"Hiba történt a Hutopanelek betöltése során: {e}")
         conn.rollback()
 
-    def update_adag_fk(conn):
-        """
-        Frissíti a Homerseklet_Meresek táblát az Adag_Szam_FK-val,
-        egyszerű, gyors, standardizált string összehasonlítással.
-        """
-        print("Adag FK frissítése időintervallum alapján (Tiszta SQL)...")
-        cursor = conn.cursor()
 
-        # Mivel a Pythonban a dátumok már normailzálva vannak, az összehasonlítás
-        # stringként is tökéletesen működik, és sokkal gyorsabb, mint a DATETIME.
-        update_sql = """
-                     UPDATE Homerseklet_Meresek
-                     SET Adag_Szam_FK = (
-                         SELECT Adag_Szam
-                         FROM Adag
-                         WHERE 
-                             Homerseklet_Meresek.Meres_Idopont >= Adag.Kezdet_Idopont
-                         AND 
-                             Homerseklet_Meresek.Meres_Idopont < Adag.Vege_Idopont
-                     )
-                     WHERE Adag_Szam_FK IS NULL;
-                     """
+def update_adag_fk(conn):
+    """
+    Frissíti a Homerseklet_Meresek táblát az Adag_Szam_FK-val,
+    egyszerű, gyors, standardizált string összehasonlítással.
+    """
+    print("Adag FK frissítése időintervallum alapján (Tiszta SQL)...")
+    cursor = conn.cursor()
 
-        cursor.execute(update_sql)
-        conn.commit()
-        # ... (a frissített sorok számlálása)
+    # Mivel a Pythonban a dátumok már normailzálva vannak, a string összehasonlítás
+    # (ami gyorsabb) most már pontos eredményt ad.
+    update_sql = """
+                 UPDATE Homerseklet_Meresek
+                 SET Adag_Szam_FK = (
+                     SELECT Adag_Szam
+                     FROM Adag
+                     WHERE 
+                         Homerseklet_Meresek.Meres_Idopont >= Adag.Kezdet_Idopont
+                     AND 
+                         Homerseklet_Meresek.Meres_Idopont < Adag.Vege_Idopont
+                 )
+                 WHERE Adag_Szam_FK IS NULL;
+                 """
+
+    cursor.execute(update_sql)
+    conn.commit()
+
+    # Ellenőrizzük, hány sor frissült sikeresen
     frissitett_sorok_szama = \
-        cursor.execute("SELECT COUNT(Meres_Id) FROM Homerseklet_Meresek WHERE Adag_Szam_FK IS NOT NULL").fetchone()[0]
+    cursor.execute("SELECT COUNT(Meres_Id) FROM Homerseklet_Meresek WHERE Adag_Szam_FK IS NOT NULL").fetchone()[0]
     print(f"{frissitett_sorok_szama} mérési adathoz találtunk Adag FK-t és frissítettünk.")
 
 
