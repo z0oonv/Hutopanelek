@@ -83,36 +83,52 @@ def load_adagok(conn):
     conn.commit()
     print(f"{len(adag_data)} adag rekord feltöltve.")
 
-
 def load_hutopanelek(conn):
-    """Beolvassa, UNPIVOT-olja és feltölti a Panel és Homerseklet_Meresek táblákat."""
-    print("Hűtőpanelek adatainak normalizálása és feltöltése...")
-
-    # --- 1. Fejlécek elemzése (Panel_Szam kinyerése - ÚJ, Szuper Robusztus RegEx) ---
-    panel_szamok = set()
-    try:
-        with open(HUTOPANELEK_FILE, 'r', encoding='cp1250') as f:
-            reader = csv.reader(f, delimiter=';')
-            header = next(reader)  # Leolvassuk a fejlécet
-
-        for col_name in header:
-            # Csak a számot keresi a [ előtt (Pl.: 1 [°C] Time)
-            # A minta: Panel_Szám [
-            match = re.search(r"(\d+)\s*\[", col_name)
-            if match:
-                panel_num = int(match.group(1))
-                panel_szamok.add(panel_num)
-
-        # Panel tábla feltöltése
+        """Betölti a Hutopanelek.csv fájl adatait a Homerseklet_Meresek táblába."""
         cursor = conn.cursor()
-        panel_szamok_list = sorted(list(panel_szamok))
-        cursor.executemany("INSERT OR IGNORE INTO Panel (Panel_Szam) VALUES (?)", [(p,) for p in panel_szamok_list])
-        conn.commit()
-        print(f"{len(panel_szamok_list)} panel azonosító feltöltve.")
 
-    except FileNotFoundError:
-        print(f"Hiba: A fájl ({HUTOPANELEK_FILE}) nem található.")
-        return
+        # 1. Definiáljuk a panel sorszámát és a hozzá tartozó adat ('ValueY') oszlopindexét a CSV-ben.
+        # A Panel 7 HIÁNYZIK, az indexek ennek megfelelően vannak definiálva.
+        # Indexek: (Panel_szam: ValueY_index)
+        panel_oszlopok = {
+            1: 1, 2: 3, 3: 5, 4: 7, 5: 9, 6: 11,
+            8: 13, 9: 15, 10: 17, 11: 19, 12: 21, 13: 23, 14: 25, 15: 27
+        }
+
+        insert_sql = """
+                     INSERT INTO Homerseklet_Meresek 
+                     (Meres_Idopont, Panel_Szam_FK, Homerseklet) 
+                     VALUES (?, ?, ?)
+                     """
+
+        try:
+            with open(HUTOPANELEK_FILE, 'r', encoding='utf-8') as f:
+                csv_reader = csv.reader(f, delimiter=';')
+
+                # Fejléc kihagyása
+                next(csv_reader)
+
+                for row in csv_reader:
+                    for panel_szam, value_index in panel_oszlopok.items():
+
+                        time_index = value_index - 1
+
+                        meres_idopont = row[time_index]
+                        hofok_szoveg = row[value_index]
+
+                        # 🚨 JAVÍTÁS: Tizedesvessző cseréje tizedespontra, hogy számként kezelje az SQL
+                        hofok = hofok_szoveg.replace(',', '.')
+
+                        # Ellenőrzés, hogy ne üres értékeket szúrjunk be
+                        if meres_idopont and hofok:
+                            cursor.execute(insert_sql, (meres_idopont, panel_szam, hofok))
+
+                conn.commit()
+                print("Hutopanelek adatai sikeresen betöltve a Homerseklet_Meresek táblába.")
+
+        except Exception as e:
+            print(f"Hiba történt a Hutopanelek betöltése során: {e}")
+            conn.rollback()
 
     if not panel_szamok_list:
         print("Nincsenek panel adatok a folytatáshoz.")

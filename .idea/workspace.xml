@@ -4,9 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ddf1c56c-974e-49a7-8e0a-901245ade616" name="Changes" comment="def update adag frissítés">
+    <list default="true" id="ddf1c56c-974e-49a7-8e0a-901245ade616" name="Changes" comment="def update adag frissítés, szöveg javítás.&#10;Elméletileg jó.">
+      <change afterPath="$PROJECT_DIR$/koho_hutes_1030.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kohohutes_1030.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/huto_panel_1.py" beforeDir="false" afterPath="$PROJECT_DIR$/huto_panel_1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kohohutes_1027.py" beforeDir="false" afterPath="$PROJECT_DIR$/kohohutes_1027.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,9 +47,11 @@
     "Python tests.Doctests in sql.executor": "Debug",
     "Python.Time_filter.executor": "Run",
     "Python.adat_tisztitas.executor": "Run",
-    "Python.huto_panel_1.executor": "Run",
+    "Python.huto_panel_1.executor": "Debug",
+    "Python.koho_hutes_1030.executor": "Run",
     "Python.koho_hutes_nyers_adatfeltolt.executor": "Run",
     "Python.kohohutes_1027.executor": "Run",
+    "Python.kohohutes_1030.executor": "Run",
     "Python.masodpercteszt.executor": "Run",
     "Python.oszlop nevek.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -60,7 +65,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.general",
+    "settings.editor.selected.configurable": "configurable.group.tools",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -416,7 +421,15 @@
       <option name="project" value="LOCAL" />
       <updated>1761581790942</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="def update adag frissítés, szöveg javítás.&#10;Elméletileg jó.">
+      <option name="closed" value="true" />
+      <created>1761582332740</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1761582332740</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -446,7 +459,8 @@
     <MESSAGE value="adag_fk frissítés jav" />
     <MESSAGE value="tisztalappal indulás" />
     <MESSAGE value="def update adag frissítés" />
-    <option name="LAST_COMMIT_MESSAGE" value="def update adag frissítés" />
+    <MESSAGE value="def update adag frissítés, szöveg javítás.&#10;Elméletileg jó." />
+    <option name="LAST_COMMIT_MESSAGE" value="def update adag frissítés, szöveg javítás.&#10;Elméletileg jó." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
